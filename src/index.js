@@ -4,10 +4,10 @@ const {
   scrape,
   log,
   utils,
-  CookieKonnector
+  CookieKonnector, 
+  VENDOR_DOWN
 } = require('cozy-konnector-libs')
 
-const { VENDOR_DOWN } = require('cozy-konnector-libs/dist/helpers/errors')
 const baseUrl = 'https://proprietaires.artemisiagestion.com/'
 
 class ArtemisiaKonnector extends CookieKonnector
