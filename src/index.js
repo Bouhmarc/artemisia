@@ -4,7 +4,8 @@ const {
   scrape,
   log,
   utils,
-  CookieKonnector, 
+  CookieKonnector,
+  solveCaptcha,
   VENDOR_DOWN
 } = require('cozy-konnector-libs')
 
@@ -106,13 +107,19 @@ class ArtemisiaKonnector extends CookieKonnector
 
   async authenticate(sUser, sPassword)
   {
-
     var querystring = require('querystring');
-    var request = require('request');
+    
+    const login$ = await this.request("https://proprietaires.artemisiagestion.com/login")
+    var url = require('url');
+    var url_parts = url.parse(login$('#google-recaptcha-js').attr('src'), true);
+    var sCle = url_parts.query['render'];
+    
+    const gRecaptchaResponse = await solveCaptcha({ "websiteURL":baseUrl, "websiteKey":sCle })
     
       var form = {
           log: sUser,
-          pwd: sPassword
+          pwd: sPassword,
+          "g-recaptcha-response": gRecaptchaResponse
         };
       
       var formData = querystring.stringify(form);
